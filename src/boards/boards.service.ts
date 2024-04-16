@@ -8,8 +8,12 @@ import { CreateBoardDto } from './boards.dto';
 export class BoardsService {
   private boards: Board[] = [];
 
-  getAllBoards(): Board[] {
+  findAllBoards(): Board[] {
     return this.boards;
+  }
+
+  findOneBoard(boardId: string): Board {
+    return this.boards.find((board) => board.id === boardId);
   }
 
   createBoard(createBoardDto: CreateBoardDto): Board {
