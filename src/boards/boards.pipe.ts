@@ -8,7 +8,7 @@ export class BoardStatusValidationPipes implements PipeTransform {
     value = value.toUpperCase();
 
     if (!this.isValidStatus(value)) {
-      throw new BadRequestException(`${value} isn't in the status options`);
+      throw new BadRequestException(`${value} ins't in the status options`);
     }
 
     return value;
@@ -17,6 +17,6 @@ export class BoardStatusValidationPipes implements PipeTransform {
   private isValidStatus(status: 'PUBLIC' | 'PRIVATE') {
     const index = this.StatusOptions.indexOf(status);
 
-    return index !== -1;
+    return index !== -1; // -1이 아니면 true
   }
 }
