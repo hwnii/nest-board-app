@@ -3,9 +3,17 @@ import { Board, BoardStatus } from './board.model';
 import { CreateBoardDto } from './boards.dto';
 
 import { v1 as uuid } from 'uuid';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { BoardEntity } from './boards.entity';
 
 @Injectable()
 export class BoardsService {
+  constructor(
+    @InjectRepository(BoardEntity)
+    private boardRepository: Repository<BoardEntity>,
+  ) {}
+
   private boards: Board[] = [];
 
   findAllBoards(): Board[] {
