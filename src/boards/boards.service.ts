@@ -11,7 +11,7 @@ import { BoardEntity } from './boards.entity';
 export class BoardsService {
   constructor(
     @InjectRepository(BoardEntity)
-    private boardRepository: Repository<BoardEntity>,
+    private readonly boardRepository: Repository<BoardEntity>,
   ) {}
 
   private boards: Board[] = [];
