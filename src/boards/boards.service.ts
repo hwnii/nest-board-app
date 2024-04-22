@@ -16,10 +16,6 @@ export class BoardsService {
   //   return this.boards;
   // }
 
-  async findAllBoards(): Promise<Board[]> {
-    return await this.boardRepository.find();
-  }
-
   // findBoardById(boardId: string): Board {
   //   const targetBoard = this.boards.find((board) => board.id === boardId);
 
@@ -29,16 +25,6 @@ export class BoardsService {
 
   //   return targetBoard;
   // }
-
-  async findOneById(id: number): Promise<Board> {
-    const found = await this.boardRepository.findOneBy({ id });
-
-    if (!found) {
-      throw new NotFoundException(`Can't found board id ${id}`);
-    }
-
-    return found;
-  }
 
   // createBoard(createBoardDto: CreateBoardDto): Board {
   //   const { title, description } = createBoardDto;
@@ -55,6 +41,35 @@ export class BoardsService {
   //   return board;
   // }
 
+  // updateBoardStatus(boardId: string, status: BoardStatus): Board {
+  //   const targetBoard = this.findBoardById(boardId);
+  //   targetBoard.status = status;
+
+  //   return targetBoard;
+  // }
+
+  // deleteBoard(boardId: string): string {
+  //   const targetBoard = this.findBoardById(boardId); // 이미 에러 처리가 되어있음
+
+  //   this.boards = this.boards.filter((board) => board.id !== targetBoard.id);
+
+  //   return boardId;
+  // }
+
+  async findAllBoards(): Promise<Board[]> {
+    return await this.boardRepository.find();
+  }
+
+  async findOneById(id: number): Promise<Board> {
+    const found = await this.boardRepository.findOneBy({ id });
+
+    if (!found) {
+      throw new NotFoundException(`Can't found board id ${id}`);
+    }
+
+    return found;
+  }
+
   async createBoard(createBoardDto: CreateBoardDto): Promise<Board> {
     const { title, description } = createBoardDto;
     const status: BoardStatus = 'PUBLIC';
@@ -68,13 +83,6 @@ export class BoardsService {
     return await this.boardRepository.save(board);
   }
 
-  // updateBoardStatus(boardId: string, status: BoardStatus): Board {
-  //   const targetBoard = this.findBoardById(boardId);
-  //   targetBoard.status = status;
-
-  //   return targetBoard;
-  // }
-
   async updateBoardStatus(
     boardId: number,
     status: BoardStatus,
@@ -86,17 +94,13 @@ export class BoardsService {
     return this.boardRepository.save(targetBoard);
   }
 
-  // deleteBoard(boardId: string): string {
-  //   const targetBoard = this.findBoardById(boardId); // 이미 에러 처리가 되어있음
+  async deleteBoard(boardId: number): Promise<void> {
+    const result = await this.boardRepository.delete(boardId);
 
-  //   this.boards = this.boards.filter((board) => board.id !== targetBoard.id);
+    if (result.affected) {
+      throw new NotFoundException(`Can't find Board with id ${boardId}`);
+    }
 
-  //   return boardId;
-  // }
-
-  async deleteBoard(boardId: number): Promise<number> {
-    await this.boardRepository.delete(boardId);
-
-    return boardId;
+    console.log('result: ', result);
   }
 }
